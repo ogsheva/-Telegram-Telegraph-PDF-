@@ -8,7 +8,7 @@ import os
 # ============================================
 
 # Токен Telegram бота
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "6042409577:AAGcZtBewJkrJtq9Z0sYX2he9tV0uBQ5QWI")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "Тут ваш токен "" - не убирать")
 
 # Директория для временных PDF файлов
 TEMP_DIR = './temp_pdfs'
