@@ -1,266 +1,308 @@
-<div align="center">
+# Telegram Bot для конвертации Telegraph в PDF
 
-# 📄 Telegraph to PDF Bot
+Профессиональный бот для конвертации статей с Telegraph/Teletype в красивые PDF-файлы.
 
-### 🤖 Telegram бот для конвертации статей Telegraph в красивые PDF файлы
+## ✨ Возможности
 
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Telegram](https://img.shields.io/badge/Telegram-Bot-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://core.telegram.org/bots)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](Dockerfile)
+- ✅ Поддержка множества доменов: `telegra.ph`, `teletype.in`, `graph.org`
+- ✅ Сохранение всех изображений в PDF
+- ✅ Профессиональное форматирование (шрифты, отступы, стили)
+- ✅ Асинхронная обработка запросов
+- ✅ Автоматическая очистка временных файлов
+- ✅ Обработка ошибок и валидация URL
+- ✅ Логирование всех операций
 
-[Возможности](#-возможности) • [Установка](#-установка) • [Использование](#-использование) • [Документация](#-документация) • [FAQ](#-faq)
+## 📋 Требования
 
-![Demo](https://via.placeholder.com/800x400/0066cc/ffffff?text=Telegraph+%E2%86%92+PDF+Bot)
+- Python 3.10 или выше
+- Telegram Bot Token (получить у [@BotFather](https://t.me/botfather))
+- Системные библиотеки для WeasyPrint
 
-</div>
+## 🚀 Установка
 
----
+### Шаг 1: Клонирование и подготовка
 
-## 🌟 Возможности
+```bash
+# Создайте директорию проекта
+mkdir telegraph_pdf_bot
+cd telegraph_pdf_bot
 
-<table>
-<tr>
-<td width="50%">
-
-### 🚀 Для пользователей
-
-- ✅ Конвертация **одной ссылкой**
-- 🖼️ Сохранение **всех изображений**
-- 🎨 **Профессиональное** оформление
-- ⚡ Обработка за **5-10 секунд**
-- 📱 Работает на **всех платформах**
-- 🌍 Поддержка **кириллицы**
-
-</td>
-<td width="50%">
-
-### 💻 Для разработчиков
-
-- 🐍 Python 3.10+ с **async/await**
-- 📦 **Production-ready** код
-- 🐳 **Docker** & **docker-compose**
-- 📚 **50+ страниц** документации
-- 🛠️ Легко **кастомизируется**
-- 🔧 **systemd** конфигурация
-
-</td>
-</tr>
-</table>
-
----
-
-## 🎯 Демонстрация
-
-```
-👤 Пользователь отправляет:
-   https://telegra.ph/My-Great-Article-01-15
-
-🤖 Бот отвечает:
-   ⏳ Загружаю статью...
-   📄 Генерирую PDF...
-   📤 Отправляю файл...
-   
-   [📄 My Great Article.pdf]
-   Вот ваша статья в PDF: My Great Article
+# Скопируйте файлы main.py и requirements.txt в эту папку
 ```
 
-<div align="center">
+### Шаг 2: Установка системных зависимостей
 
-### 🎨 Результат
+WeasyPrint требует установки системных библиотек для работы с шрифтами и графикой.
 
-Профессионально оформленный PDF документ с:
-- Красивыми шрифтами и отступами
-- Всеми изображениями из статьи
-- Информацией об авторе
-- Сохранённым форматированием
+#### 🐧 Linux (Ubuntu/Debian)
 
-</div>
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+    python3-pip \
+    python3-venv \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
+    libgdk-pixbuf2.0-0 \
+    libffi-dev \
+    shared-mime-info
+```
 
----
+#### 🐧 Linux (CentOS/RHEL/Fedora)
 
-## 📦 Быстрый старт
+```bash
+sudo dnf install -y \
+    python3-pip \
+    python3-virtualenv \
+    pango \
+    gdk-pixbuf2 \
+    libffi-devel
+```
 
-### 🪟 Windows
+#### 🍎 macOS
 
-```powershell
-# 1. Клонируйте репозиторий
-git clone https://github.com/your-username/telegraph-pdf-bot.git
-cd telegraph-pdf-bot
+```bash
+# Установите Homebrew, если еще не установлен
+# https://brew.sh
 
-# 2. Создайте виртуальное окружение
-python -m venv venv
+brew install python3 pango gdk-pixbuf libffi
+```
+
+#### 🪟 Windows
+
+**Важно:** WeasyPrint на Windows требует GTK3 библиотеки.
+
+1. Скачайте и установите GTK3 Runtime:
+   - Перейдите на https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/releases
+   - Скачайте последний `.exe` установщик
+   - Установите с опцией "Add to PATH"
+
+2. Перезагрузите командную строку после установки
+
+**Альтернатива для Windows:** Используйте WSL2 (Windows Subsystem for Linux) и следуйте инструкциям для Linux.
+
+### Шаг 3: Создание виртуального окружения
+
+```bash
+# Создайте виртуальное окружение
+python3 -m venv venv
+
+# Активируйте его
+# Linux/macOS:
+source venv/bin/activate
+
+# Windows:
 venv\Scripts\activate
+```
 
-# 3. Установите зависимости
+### Шаг 4: Установка Python зависимостей
+
+```bash
+pip install --upgrade pip
 pip install -r requirements.txt
+```
 
-# 4. Запустите бота
-$env:TELEGRAM_BOT_TOKEN="ваш_токен_от_@BotFather"
+### Шаг 5: Настройка токена бота
+
+Есть два способа:
+
+#### Способ 1: Переменная окружения (рекомендуется)
+
+```bash
+# Linux/macOS:
+export TELEGRAM_BOT_TOKEN="your_bot_token_here"
+
+# Windows (CMD):
+set TELEGRAM_BOT_TOKEN=your_bot_token_here
+
+# Windows (PowerShell):
+$env:TELEGRAM_BOT_TOKEN="your_bot_token_here"
+```
+
+Для постоянного хранения:
+
+**Linux/macOS:**
+```bash
+echo 'export TELEGRAM_BOT_TOKEN="your_token"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**Windows:** Добавьте через "Система" → "Дополнительные параметры системы" → "Переменные среды"
+
+#### Способ 2: Прямо в коде (не рекомендуется для продакшена)
+
+Откройте `main.py` и замените:
+```python
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', 'YOUR_BOT_TOKEN_HERE')
+```
+
+на:
+```python
+TELEGRAM_TOKEN = 'ваш_токен_от_BotFather'
+```
+
+### Шаг 6: Запуск бота
+
+```bash
 python main.py
 ```
 
-### 🐧 Linux / macOS
+Вы должны увидеть сообщение:
+```
+INFO - Бот запущен и готов к работе!
+```
+
+## 📖 Использование
+
+1. Откройте вашего бота в Telegram
+2. Отправьте команду `/start` для приветствия
+3. Отправьте ссылку на Telegraph статью, например:
+   ```
+   https://telegra.ph/Example-Article-12-31
+   ```
+4. Дождитесь обработки (5-10 секунд)
+5. Получите PDF файл!
+
+## 🎯 Команды бота
+
+- `/start` - Приветственное сообщение
+- `/help` - Справка по использованию
+
+## 🔧 Технические детали
+
+### Используемые библиотеки
+
+- **python-telegram-bot 21.0.1** - Современный асинхронный фреймворк для Telegram
+- **requests** - HTTP запросы для загрузки статей
+- **beautifulsoup4** - Парсинг HTML контента
+- **weasyprint** - Генерация PDF из HTML (более надежная альтернатива pdfkit)
+- **lxml** - Быстрый парсер XML/HTML
+- **Pillow** - Обработка изображений
+
+### Почему WeasyPrint, а не pdfkit?
+
+**WeasyPrint выбран по следующим причинам:**
+
+1. ✅ **Чистый Python** - не требует установки сторонних исполняемых файлов (wkhtmltopdf)
+2. ✅ **Лучшая поддержка CSS3** - современные стили и макеты
+3. ✅ **Работа с изображениями** - автоматическая загрузка и встраивание картинок
+4. ✅ **Unicode** - отличная поддержка кириллицы и других языков
+5. ✅ **Активная разработка** - регулярные обновления и поддержка
+
+**Недостатки pdfkit:**
+- ❌ Требует установки wkhtmltopdf (системная утилита)
+- ❌ wkhtmltopdf больше не поддерживается (последний релиз 2020)
+- ❌ Проблемы с путями на Windows
+- ❌ Сложности с изображениями по HTTPS
+
+### Структура проекта
+
+```
+telegraph_pdf_bot/
+├── main.py              # Основной код бота
+├── requirements.txt     # Python зависимости
+├── README.md           # Эта инструкция
+├── temp_pdfs/          # Временные файлы (создается автоматически)
+└── venv/               # Виртуальное окружение (после установки)
+```
+
+## 🐛 Решение проблем
+
+### Ошибка: "No module named 'telegram'"
 
 ```bash
-# Автоматическая установка
-bash deploy.sh
+# Убедитесь, что виртуальное окружение активировано
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
 
-# Запуск
-export TELEGRAM_BOT_TOKEN="ваш_токен"
-bash start.sh
+# Переустановите зависимости
+pip install -r requirements.txt
 ```
 
-### 🐳 Docker (рекомендуется)
+### Ошибка: "OSError: cannot load library 'gobject-2.0-0'"
 
+**Linux:**
 ```bash
-docker-compose up -d
+sudo apt-get install libgobject-2.0-0
 ```
 
-### 📱 Android (Termux)
+**Windows:**
+Переустановите GTK3 Runtime (см. Шаг 2)
 
-Полная инструкция в [TERMUX_INSTALL.md](TERMUX_INSTALL.md)
+### Ошибка: "Token not set"
 
----
+Убедитесь, что вы установили переменную окружения или изменили токен в коде.
 
-## 🛠️ Технологический стек
+### Бот не отвечает
 
-```mermaid
-graph LR
-    A[Telegram Bot API] --> B[python-telegram-bot]
-    C[Telegraph/Teletype] --> D[BeautifulSoup4]
-    D --> E[HTML Parser]
-    E --> F[WeasyPrint]
-    F --> G[PDF Document]
-    G --> A
+1. Проверьте интернет соединение
+2. Убедитесь, что токен правильный (проверьте у @BotFather)
+3. Посмотрите логи в консоли на наличие ошибок
+
+### PDF создается без изображений
+
+- Проверьте интернет соединение (WeasyPrint загружает изображения онлайн)
+- Убедитесь, что изображения доступны (не удалены автором)
+
+## 🚀 Запуск в продакшене
+
+### Использование systemd (Linux)
+
+Создайте файл `/etc/systemd/system/telegraph-bot.service`:
+
+```ini
+[Unit]
+Description=Telegraph PDF Bot
+After=network.target
+
+[Service]
+Type=simple
+User=your_username
+WorkingDirectory=/path/to/telegraph_pdf_bot
+Environment="TELEGRAM_BOT_TOKEN=your_token_here"
+ExecStart=/path/to/telegraph_pdf_bot/venv/bin/python main.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-### Основные библиотеки
-
-| Библиотека | Версия | Назначение |
-|-----------|--------|------------|
-| **python-telegram-bot** | 21.0.1 | Асинхронный Telegram framework |
-| **requests** | 2.31.0 | HTTP клиент |
-| **beautifulsoup4** | 4.12.3 | Парсинг HTML |
-| **weasyprint** | 61.2 | Генерация PDF |
-| **pydyf** | 0.10.0 | PDF библиотека |
-| **lxml** | 5.1.0 | XML/HTML парсер |
-| **Pillow** | 10.2.0 | Обработка изображений |
-
----
-
-## 📖 Документация
-
-<table>
-<tr>
-<td width="50%">
-
-### 🚀 Начало работы
-- [README.md](README.md) — Полная инструкция
-- [QUICKSTART.md](QUICKSTART.md) — Быстрый старт (5 мин)
-- [EXAMPLES.md](EXAMPLES.md) — Примеры использования
-
-### 🐛 Решение проблем
-- [FAQ.md](FAQ.md) — Частые вопросы (50+ ответов)
-- [WINDOWS_TROUBLESHOOTING.md](WINDOWS_TROUBLESHOOTING.md) — Проблемы Windows
-
-</td>
-<td width="50%">
-
-### 📱 Специальные платформы
-- [TERMUX_INSTALL.md](TERMUX_INSTALL.md) — Android (Termux)
-- [TERMUX_CHEATSHEET.md](TERMUX_CHEATSHEET.md) — Шпаргалка команд
-
-### 📋 Дополнительно
-- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) — Структура проекта
-- [CHANGELOG.md](CHANGELOG.md) — История изменений
-- [config_example.py](config_example.py) — Расширенные настройки
-
-</td>
-</tr>
-</table>
-
----
-
-## ⚙️ Конфигурация
-
-### Основные настройки
-
-```python
-# Переменные окружения
-TELEGRAM_BOT_TOKEN=ваш_токен_от_BotFather
-
-# Или в config.py
-VALID_DOMAINS = ['telegra.ph', 'teletype.in', 'graph.org']
-TEMP_DIR = './temp_pdfs'
-```
-
-### Кастомизация PDF
-
-```python
-# Изменить стили в main.py
-PDF_STYLES = """
-body {
-    font-family: 'Arial', sans-serif;
-    font-size: 14pt;
-    line-height: 1.8;
-}
-
-h1 {
-    color: #0066cc;
-    text-align: center;
-}
-"""
-```
-
-### Добавить watermark
-
-```python
-@page {
-    @bottom-center {
-        content: "Создано вашим ботом";
-        font-size: 8pt;
-        color: #999;
-    }
-}
-```
-
----
-
-## 🎨 Кастомизация
-
-### Поддержка новых доменов
-
-```python
-VALID_DOMAINS = ['telegra.ph', 'teletype.in', 'graph.org', 'ваш-домен.com']
-```
-
-### Изменение шрифтов
-
-```python
-PDF_STYLES = """
-body { font-family: 'Times New Roman', serif; }
-"""
-```
-
-### Webhook режим
-
-См. детали в [config_example.py](config_example.py)
-
----
-
-## 🚀 Развертывание
-
-### systemd (Linux)
-
+Запустите:
 ```bash
-sudo cp telegraph-bot.service /etc/systemd/system/
+sudo systemctl daemon-reload
 sudo systemctl enable telegraph-bot
 sudo systemctl start telegraph-bot
+sudo systemctl status telegraph-bot
 ```
 
-### Docker
+### Использование Docker
 
+Создайте `Dockerfile`:
+
+```dockerfile
+FROM python:3.11-slim
+
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
+    libgdk-pixbuf2.0-0 \
+    libffi-dev \
+    shared-mime-info \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY main.py .
+
+CMD ["python", "main.py"]
+```
+
+Запуск:
 ```bash
 docker build -t telegraph-bot .
 docker run -d --name telegraph-bot \
@@ -269,163 +311,18 @@ docker run -d --name telegraph-bot \
     telegraph-bot
 ```
 
-### Heroku
+## 📝 Лицензия
 
-```bash
-heroku create your-app-name
-git push heroku main
-heroku config:set TELEGRAM_BOT_TOKEN=your_token
-```
-
----
-
-## 📊 Производительность
-
-| Тип статьи | Время | Размер PDF |
-|-----------|-------|-----------|
-| 📝 Короткая (<1000 слов) | 2-5 сек | ~100 KB |
-| 📄 Средняя (1000-3000 слов) | 5-10 сек | ~500 KB |
-| 📚 Длинная (>3000 слов, 10+ фото) | 10-20 сек | 2-5 MB |
-
-**Требования:**
-- 💾 Минимум: 128 MB RAM, 200 MB диск
-- ⚡ Рекомендуется: 512 MB RAM, 500 MB диск
-
----
-
-## ❓ FAQ
-
-<details>
-<summary><b>Почему WeasyPrint, а не pdfkit?</b></summary>
-
-| Критерий | pdfkit | WeasyPrint |
-|----------|--------|-----------|
-| Установка | Требует wkhtmltopdf | Чистый Python ✅ |
-| Поддержка | Заброшен (2020) | Активная ✅ |
-| Unicode | Проблемы | Отлично ✅ |
-| Windows | Сложности | Работает ✅ |
-| CSS3 | Ограниченная | Полная ✅ |
-
-</details>
-
-<details>
-<summary><b>Бот не создаёт PDF (ошибка PDF.__init__)</b></summary>
-
-```bash
-pip uninstall pydyf -y
-pip install pydyf==0.10.0
-```
-
-</details>
-
-<details>
-<summary><b>Как запустить в фоне на Linux?</b></summary>
-
-```bash
-# Вариант 1: screen
-screen -S bot
-python main.py
-# Ctrl+A, затем D для отсоединения
-
-# Вариант 2: systemd
-sudo systemctl enable telegraph-bot
-sudo systemctl start telegraph-bot
-```
-
-</details>
-
-<details>
-<summary><b>Можно ли запустить на Raspberry Pi?</b></summary>
-
-Да! Следуйте инструкциям для Linux.
-
-</details>
-
-[Больше вопросов в FAQ.md](FAQ.md)
-
----
+MIT License - свободное использование в личных и коммерческих проектах.
 
 ## 🤝 Вклад в проект
 
-Вклады приветствуются! Вот как помочь:
+Нашли баг? Есть предложения? Создайте Issue или Pull Request!
 
-1. 🍴 Форкните репозиторий
-2. 🔧 Создайте ветку (`git checkout -b feature/amazing-feature`)
-3. 💾 Закоммитьте изменения (`git commit -m 'Add amazing feature'`)
-4. 📤 Запушьте ветку (`git push origin feature/amazing-feature`)
-5. 🎉 Создайте Pull Request
+## 📧 Контакты
 
-### TODO список
-
-- [ ] Поддержка Medium, VC.ru, Habr
-- [ ] Web интерфейс для управления
-- [ ] Сохранение в Google Drive
-- [ ] Форматы EPUB, MOBI
-- [ ] Предпросмотр перед конвертацией
-- [ ] OCR для изображений
-- [ ] Мультиязычность
+Для вопросов и предложений свяжитесь с разработчиком.
 
 ---
 
-## 📜 Лицензия
-
-Этот проект лицензирован под [MIT License](LICENSE).
-
-```
-MIT License
-
-Copyright (c) 2025 Telegraph PDF Bot Contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction...
-```
-
----
-
-## 🌟 Авторы и благодарности
-
-- **Разработчик:** [Your Name](https://github.com/your-username)
-- **Документация:** Community Contributors
-- **Тестирование:** Beta Testers
-
-### Благодарности
-
-- [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) — отличный фреймворк
-- [WeasyPrint](https://weasyprint.org/) — мощная PDF библиотека
-- [Telegraph](https://telegra.ph/) — за простой и красивый сервис
-
----
-
-## 📞 Поддержка
-
-Нужна помощь? Есть несколько вариантов:
-
-- 📖 Прочитайте [документацию](README.md)
-- ❓ Проверьте [FAQ](FAQ.md)
-- 🐛 Создайте [Issue](https://github.com/your-username/telegraph-pdf-bot/issues)
-- 💬 Присоединяйтесь к [обсуждениям](https://github.com/your-username/telegraph-pdf-bot/discussions)
-
----
-
-## 📈 Статистика
-
-![GitHub stars](https://img.shields.io/github/stars/your-username/telegraph-pdf-bot?style=social)
-![GitHub forks](https://img.shields.io/github/forks/your-username/telegraph-pdf-bot?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/your-username/telegraph-pdf-bot?style=social)
-
-![GitHub issues](https://img.shields.io/github/issues/your-username/telegraph-pdf-bot)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/your-username/telegraph-pdf-bot)
-![GitHub last commit](https://img.shields.io/github/last-commit/your-username/telegraph-pdf-bot)
-
----
-
-<div align="center">
-
-### ⭐ Если проект помог — поставьте звезду!
-
-**Сделано с ❤️ для сообщества**
-
-[⬆ Вверх](#-telegraph-to-pdf-bot)
-
-</div>
+**Приятного использования! 🎉**

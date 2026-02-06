@@ -1,0 +1,29 @@
+[Unit]
+Description=Telegraph PDF Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_USERNAME
+Group=YOUR_GROUP
+WorkingDirectory=/path/to/telegraph_pdf_bot
+Environment="TELEGRAM_BOT_TOKEN=your_bot_token_here"
+
+# Путь к Python в виртуальном окружении
+ExecStart=/path/to/telegraph_pdf_bot/venv/bin/python /path/to/telegraph_pdf_bot/main.py
+
+# Автоматический перезапуск при падении
+Restart=always
+RestartSec=10
+
+# Настройки безопасности
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Логирование
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=telegraph-bot
+
+[Install]
+WantedBy=multi-user.target

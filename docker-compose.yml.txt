@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  telegraph-bot:
+    build: .
+    container_name: telegraph-pdf-bot
+    restart: unless-stopped
+    
+    environment:
+      # Установите ваш токен здесь или используйте .env файл
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+    
+    # Опциональный volume для постоянного хранения логов
+    volumes:
+      - ./logs:/app/logs
+    
+    # Ограничения ресурсов (опционально)
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Политика перезапуска
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

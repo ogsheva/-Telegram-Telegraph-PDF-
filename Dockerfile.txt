@@ -1,0 +1,36 @@
+FROM python:3.11-slim
+
+# Метаданные
+LABEL maintainer="Telegraph PDF Bot"
+LABEL description="Telegram bot for converting Telegraph articles to PDF"
+
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
+    libgdk-pixbuf2.0-0 \
+    libffi-dev \
+    shared-mime-info \
+    libcairo2 \
+    libpangocairo-1.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Создание рабочей директории
+WORKDIR /app
+
+# Копирование requirements и установка Python зависимостей
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Копирование кода приложения
+COPY main.py .
+
+# Создание директории для временных файлов
+RUN mkdir -p temp_pdfs
+
+# Переменная окружения для токена (будет передана при запуске)
+ENV TELEGRAM_BOT_TOKEN=""
+
+# Запуск бота
+CMD ["python", "-u", "main.py"]
